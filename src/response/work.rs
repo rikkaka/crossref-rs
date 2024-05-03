@@ -38,110 +38,18 @@ pub struct WorkList {
 #[serde(rename_all = "kebab-case")]
 #[allow(missing_docs)]
 pub struct Work {
-    /// Name of work's publisher
-    pub publisher: String,
     /// Work titles, including translated titles
     pub title: Vec<String>,
-    /// Work titles in the work's original publication language
-    pub original_title: Option<Vec<String>>,
-    /// the language of this work
-    pub language: Option<String>,
-    /// Abstract as a JSON string or a JATS XML snippet encoded into a JSON string
-    pub short_title: Option<Vec<String>>,
-    /// Abstract as a JSON string or a JATS XML snippet encoded into a JSON string
     #[serde(rename = "abstract")]
     pub abstract_: Option<String>,
-    /// Count of outbound references deposited with Crossref
-    pub references_count: i32,
     /// Count of inbound references deposited with Crossref
     pub is_referenced_by_count: i32,
-    /// Currently always `Crossref`
-    pub source: String,
-    pub journal_issue: Option<Issue>,
-    /// DOI prefix identifier of the form `http://id.crossref.org/prefix/DOI_PREFIX`
-    pub prefix: String,
     /// DOI of the work
     #[serde(rename = "DOI")]
     pub doi: String,
-    /// URL form of the work's DOI
-    #[serde(rename = "URL")]
-    pub url: String,
-    /// Member identifier of the form `http://id.crossref.org/member/MEMBER_ID`
-    pub member: String,
-    /// Enumeration, one of the type ids from `https://api.crossref.org/v1/types`
-    #[serde(rename = "type")]
-    pub type_: String,
-    /// the day this work entry was created
     pub created: Option<Date>,
-    /// Date on which the DOI was first registered
-    pub date: Option<Date>,
-    /// Date on which the work metadata was most recently updated
-    pub deposited: Option<Date>,
-    /// the score of the publication if any
-    /// not included in the crossrif api spec
-    pub score: Option<f32>,
-    /// Date on which the work metadata was most recently indexed.
-    /// Re-indexing does not imply a metadata change, see `deposited` for the most recent metadata change date
-    pub indexed: Date,
-    /// Earliest of `published-print` and `published-online`
-    pub issued: PartialDate,
-    /// ate on which posted content was made available online
-    pub posted: Option<PartialDate>,
-    /// Date on which a work was accepted, after being submitted, during a submission process
-    pub accepted: Option<PartialDate>,
-    /// Work subtitles, including original language and translated
-    pub subtitle: Option<Vec<String>>,
-    /// Full titles of the containing work (usually a book or journal)
-    pub container_title: Option<Vec<String>>,
-    /// Abbreviated titles of the containing work
-    pub short_container_title: Option<Vec<String>>,
-    /// Group title for posted content
-    pub group_title: Option<String>,
-    /// Issue number of an article's journal
-    pub issue: Option<String>,
-    /// Volume number of an article's journal
-    pub volume: Option<String>,
-    /// Pages numbers of an article within its journal
-    pub page: Option<String>,
-    /// the number of the corresponding article
-    pub article_number: Option<String>,
-    /// Date on which the work was published in print
-    pub published_print: Option<PartialDate>,
-    /// Date on which the work was published online
-    pub published_online: Option<PartialDate>,
-    /// Subject category names, a controlled vocabulary from Sci-Val.
-    /// Available for most journal articles
-    pub subject: Option<Vec<String>>,
-    #[serde(rename = "ISSN")]
-    pub issn: Option<Vec<String>>,
-    /// List of ISSNs with ISSN type information
-    pub issn_type: Option<Vec<ISSN>>,
-    #[serde(rename = "ISBN")]
-    pub isbn: Option<Vec<String>>,
-    pub archive: Option<Vec<String>>,
-    pub license: Option<Vec<License>>,
-    pub funder: Option<Vec<FundingBody>>,
-    pub assertion: Option<Vec<Assertion>>,
     pub author: Option<Vec<Contributor>>,
-    pub editor: Option<Vec<Contributor>>,
-    pub chair: Option<Vec<Contributor>>,
-    pub translator: Option<Vec<Contributor>>,
-    pub update_to: Option<Vec<Update>>,
-    /// Link to an update policy covering Crossmark updates for this work
-    pub update_policy: Option<String>,
-    /// URLs to full-text locations
-    pub link: Option<Vec<ResourceLink>>,
-    pub clinical_trial_number: Option<Vec<ClinicalTrialNumber>>,
-    /// Other identifiers for the work provided by the depositing member
-    pub alternative_id: Option<Vec<String>>,
-    /// List of references made by the work
-    pub reference: Option<Vec<Reference>>,
-    /// Information on domains that support Crossmark for this work
-    pub content_domain: Option<ContentDomain>,
-    /// Relations to other works
-    pub relation: Option<Relations>,
-    /// Peer review metadata
-    pub review: Option<Relations>,
+    pub reference: Option<Vec<Reference>>
 }
 
 /// Helper struct to represent dates in the cross ref api as nested arrays of numbers
@@ -214,13 +122,6 @@ pub struct ClinicalTrialNumber {
 pub struct Contributor {
     pub family: Option<String>,
     pub given: Option<String>,
-    /// URL-form of an [ORCID](http://orcid.org) identifier
-    #[serde(rename = "ORCID")]
-    pub orcid: Option<String>,
-    /// If true, record owner asserts that the ORCID user completed ORCID OAuth authentication
-    #[serde(rename = "authenticated-orcid")]
-    pub authenticated_orcid: Option<bool>,
-    pub affiliation: Option<Vec<Affiliation>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
@@ -303,7 +204,7 @@ pub struct Update {
 #[allow(missing_docs)]
 pub struct Assertion {
     pub name: String,
-    pub value: String,
+    pub value: Option<String>,
     #[serde(rename = "URL")]
     pub url: Option<String>,
     pub explanation: Option<String>,
@@ -372,32 +273,9 @@ pub struct ResourceLink {
 #[serde(rename_all = "kebab-case")]
 #[allow(missing_docs)]
 pub struct Reference {
-    pub key: String,
     #[serde(rename = "DOI")]
     pub doi: Option<String>,
-    /// One of `crossref` or `publisher`
-    pub doi_asserted_by: Option<String>,
-    pub issue: Option<String>,
-    pub first_page: Option<String>,
-    pub volume: Option<String>,
-    pub edition: Option<String>,
-    pub component: Option<String>,
-    pub standard_designator: Option<String>,
-    pub standards_body: Option<String>,
-    pub author: Option<String>,
     pub year: Option<String>,
-    pub unstructured: Option<String>,
-    pub journal_title: Option<String>,
-    pub article_title: Option<String>,
-    pub series_title: Option<String>,
-    pub volume_title: Option<String>,
-    #[serde(rename = "ISSN")]
-    pub issn: Option<String>,
-    /// One of `pissn` or `eissn`
-    pub issn_type: Option<String>,
-    #[serde(rename = "ISBN")]
-    pub isbn: Option<String>,
-    pub isbn_type: Option<String>,
 }
 
 /// ISSN info for the `Work`
