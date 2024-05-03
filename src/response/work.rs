@@ -212,7 +212,7 @@ pub struct ClinicalTrialNumber {
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[allow(missing_docs)]
 pub struct Contributor {
-    pub family: String,
+    pub family: Option<String>,
     pub given: Option<String>,
     /// URL-form of an [ORCID](http://orcid.org) identifier
     #[serde(rename = "ORCID")]
