@@ -49,7 +49,7 @@ pub struct Work {
     pub doi: String,
     pub created: Option<Date>,
     pub author: Option<Vec<Contributor>>,
-    pub reference: Option<Vec<Reference>>
+    pub reference: Option<Vec<Reference>>,
 }
 
 /// Helper struct to represent dates in the cross ref api as nested arrays of numbers
@@ -472,5 +472,4 @@ mod tests {
 
         let work: Work = from_str(work_str).unwrap();
     }
-
 }

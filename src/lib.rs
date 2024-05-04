@@ -592,6 +592,7 @@ pub struct CrossrefBuilder {
     plus_token: Option<String>,
     /// use a different base url than `Crossref::BASE_URL` https://api.crossref.org
     base_url: Option<String>,
+    proxy: Option<String>,
 }
 
 impl CrossrefBuilder {
@@ -621,6 +622,11 @@ impl CrossrefBuilder {
         self
     }
 
+    pub fn proxy(mut self, proxy: &str) -> Self {
+        self.proxy = Some(proxy.to_string());
+        self
+    }
+
     /// Returns a `Crossref` that uses this `CrossrefBuilder` configuration.
     /// # Errors
     ///
@@ -644,7 +650,13 @@ impl CrossrefBuilder {
                 })?,
             );
         }
-        let client = reqwest::Client::builder()
+        let mut client_builder = reqwest::Client::builder();
+
+        if let Some(proxy) = self.proxy {
+            client = client.proxy(reqwest::Proxy::all(proxy)?);
+        };
+
+        let client = client_builder
             .default_headers(headers)
             .build()
             .map_err(|_| ErrorKind::Config {
