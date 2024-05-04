@@ -47,7 +47,7 @@ pub struct Work {
     /// DOI of the work
     #[serde(rename = "DOI")]
     pub doi: String,
-    pub created: Option<Date>,
+    pub issued: PartialDate,
     pub author: Option<Vec<Contributor>>,
     pub reference: Option<Vec<Reference>>,
 }
