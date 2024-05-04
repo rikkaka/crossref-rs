@@ -653,7 +653,7 @@ impl CrossrefBuilder {
         let mut client_builder = reqwest::Client::builder();
 
         if let Some(proxy) = self.proxy {
-            client = client.proxy(reqwest::Proxy::all(proxy)?);
+            client_builder = client_builder.proxy(reqwest::Proxy::all(proxy)?);
         };
 
         let client = client_builder
